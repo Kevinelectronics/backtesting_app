@@ -2,7 +2,7 @@
 
 A clean, fast web app to backtest trading strategies on any stock using real market data. Built with FastAPI + a lightweight JS frontend. No account required.
 
-![Backtester screenshot](https://i.imgur.com/placeholder.png)
+![Backtester screenshot](https://ik.imagekit.io/agbb7sr41/Captura%20de%20pantalla%202026-03-17%20110804.png)
 
 ---
 
