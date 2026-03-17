@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backtester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <header class="logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+      </svg>
+      <span>Backtester</span>
+    </header>
+
+    <form id="form" autocomplete="off">
+
+      <!-- Symbol -->
+      <div class="field">
+        <label for="symbol-input">Symbol</label>
+        <div class="symbol-wrap">
+          <input id="symbol-input" type="text" placeholder="AAPL, TSLA…" spellcheck="false" />
+          <ul id="symbol-dropdown" class="dropdown hidden"></ul>
+        </div>
+      </div>
+
+      <!-- Date range -->
+      <div class="field-row">
+        <div class="field">
+          <label for="from-date">From</label>
+          <input id="from-date" type="date" value="2020-01-01" />
+        </div>
+        <div class="field">
+          <label for="to-date">To</label>
+          <input id="to-date" type="date" />
+        </div>
+      </div>
+
+      <!-- Strategy -->
+      <div class="field">
+        <label for="strategy-select">Strategy</label>
+        <select id="strategy-select"></select>
+        <p id="strategy-desc" class="hint"></p>
+      </div>
+
+      <!-- Dynamic params -->
+      <div id="params-section"></div>
+
+      <hr class="divider" />
+
+      <!-- Commission + Capital -->
+      <div class="field-row">
+        <div class="field">
+          <label for="commission">Commission %</label>
+          <input id="commission" type="number" value="0.1" min="0" step="0.01" />
+        </div>
+        <div class="field">
+          <label for="cash">Capital ($)</label>
+          <input id="cash" type="number" value="10000" min="100" step="100" />
+        </div>
+      </div>
+
+      <button id="run-btn" type="submit">
+        <span id="btn-text">Run Backtest</span>
+        <span id="btn-spinner" class="spinner hidden"></span>
+      </button>
+
+    </form>
+
+    <p id="error-msg" class="error-msg hidden"></p>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-header">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+        </svg>
+        <p class="empty-title">Run your first backtest</p>
+        <p class="hint">Pick a strategy in the sidebar, or try a preset:</p>
+      </div>
+      <div class="preset-grid" id="preset-grid"></div>
+    </div>
+
+    <!-- Results (hidden until first run) -->
+    <section id="results" class="hidden">
+
+      <!-- Toolbar: share button -->
+      <div class="results-toolbar">
+        <button id="share-btn" class="share-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span id="share-btn-text">Copy &amp; Share</span>
+        </button>
+      </div>
+
+      <!-- Verdict banner -->
+      <div id="verdict-banner" class="verdict-banner hidden"></div>
+
+      <!-- Metrics grid -->
+      <div class="metrics-grid" id="metrics-grid"></div>
+
+      <!-- Charts -->
+      <div class="charts-area">
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Price</span>
+            <span id="symbol-badge" class="badge"></span>
+          </div>
+          <div id="candle-chart"></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">Equity Curve</span>
+          </div>
+          <div class="equity-wrap">
+            <canvas id="equity-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trades table -->
+      <div class="table-card">
+        <div class="chart-header">
+          <span class="chart-title">Trades</span>
+          <span id="trade-count" class="badge"></span>
+        </div>
+        <div class="table-wrap">
+          <table id="trades-table">
+            <thead>
+              <tr>
+                <th>Entry</th><th>Exit</th><th>Size</th>
+                <th>Entry $</th><th>Exit $</th><th>P&amp;L</th><th>Return %</th>
+              </tr>
+            </thead>
+            <tbody id="trades-body"></tbody>
+          </table>
+          <p id="no-trades-msg" class="hint center hidden">No trades executed for this period.</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- CDN scripts -->
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
