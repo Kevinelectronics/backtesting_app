@@ -26,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FMP_API_KEY = "7T0In66yLvXYs3bQWQcbA4b8upYPrg4l"
+FMP_API_KEY = "your_api_key"
 FMP_BASE    = "https://financialmodelingprep.com/api/v3"
 
 # ── Indicator helpers ─────────────────────────────────────────────────────────
